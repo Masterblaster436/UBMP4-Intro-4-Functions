@@ -99,6 +99,8 @@ int main(void)
  * 
  * 1.   Which function in this program will run first? How do you know?
  * 
+        int main(void) will run first because pwm_LED5 is not the main function.
+ 
  * 2.   What is the purpose of the 'unsigned char' variable type declaration in
  *      the button_pressed() function? Is it used by this function to receive
  *      a variable from, or return a variable to the main code?
