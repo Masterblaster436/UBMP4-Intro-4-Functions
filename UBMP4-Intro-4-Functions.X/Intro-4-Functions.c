@@ -105,12 +105,21 @@ int main(void)
  *      the button_pressed() function? Is it used by this function to receive
  *      a variable from, or return a variable to the main code?
  * 
+ 	Its purpose is to store the value of button_pressed();. 
+        It is used by this function to return a variable to the main code.
+ 
  * 3.   How does the function call statement 'button = button_pressed();' in the
  *      main code support your answer in 2, above?
+ 
+ 	button_pressed(); is assigned as the variable 'button'.
  * 
  * 4.   What is the purpose of the 'unsigned char' variable type declaration in
  *      the pwm_LED5() function? Where does the value of the variable come from?
  *      Where does this value get stored in the function?
+ 
+ 	The purpose of pwmValue is to be compared to 't'.
+        The value of pwmValue comes from LED5Brightness in the main function.
+        This value gets stored in pwm_LED5 function.
  * 
  * 5.   C language compilers typically read through the entire program in a
  *      single pass, converting C code into machine code. The two functions,
@@ -123,6 +132,8 @@ int main(void)
  * 
  *      Try moving the button_pressed() and pwm_LED5() functions to below the
  *      closing brace of the main() function, and build the code. What happens?
+ 
+ 	The build fails when button_pressed() and pwm_LED5() are placed below main().
  * 
  *      The compiler should have reported an error since it did not understand
  *      what the function call was referring to because it had not seen the
