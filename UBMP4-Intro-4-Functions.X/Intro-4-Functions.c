@@ -158,6 +158,9 @@ void pwm_LED5(unsigned char);
  *      and the actual pwm_LED5() function declaration statement later in the
  *      code?
  * 
+ 	The function prototype is a function that can be used in the future.
+        The actual function is defined in the beginning before it is used.
+ 
  * 6.   Building the program with the added function prototypes should now work
  *      without generating errors, just as it did in the original program.
  * 
@@ -181,6 +184,8 @@ void pwm_LED5(unsigned char);
  *      values passed between this code and the two setup functions? How do
  *      you know?
  * 
+ 	No values are being passed because there are no parameters in this code or the setup functions.
+ 
  * 7.   The 'button' variable is a global variable because it was assigned
  *      at the beginning of the program, outside of any functions. Global
  *      variables are available to all functions. How does the 'button' variable
