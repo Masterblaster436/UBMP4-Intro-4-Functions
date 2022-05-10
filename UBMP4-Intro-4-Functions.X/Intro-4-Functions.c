@@ -191,11 +191,17 @@ void pwm_LED5(unsigned char);
  *      variables are available to all functions. How does the 'button' variable
  *      get assigned a value? In which function does this occur?
  * 
+ 	'button' gets assigned a variable when button_pressed() returns a value
+        (When SW4 is pressed)
+ 
  * 8.   Which variable does the value of LED5Brightness get transferred to in
  *      the pwm_LED5() function? Is this variable global, or local to the LED
  *      function? Could the pwm_LED5 function use the LED5Brightness variable
  *      directly, instead of transferring its value to another variable?
  * 
+ 	The value of LED5Brightness gets transferred to pwmValue in pwm_LED5().
+        pwmValue is local to the LED function. Yes, the pwm_LED5 function can use LED5Brightness directly.
+ 
  * Programming Activities
  * 
  * 1.   It might be useful to have a button that instantly turns LED D5 fully
@@ -209,11 +215,183 @@ void pwm_LED5(unsigned char);
  *      either 255 or 0, while still allowing SW4 and SW5 to adjust the
  *      brightness in smaller increments when pressed.
  *
+ 	// Program variable definitions
+unsigned char LED5Brightness = 125;
+unsigned char button;
+
+unsigned char button_pressed(void);
+
+void pwm_LED5(unsigned char);
+
+
+
+int main(void)
+{
+    OSC_config();               // Configure internal oscillator for 48 MHz
+    UBMP4_config();             // Configure on-board UBMP4 I/O devices
+	
+    while(1)
+	{
+        // Read up/down buttons and adjust LED5 brightness
+        button = button_pressed();
+        
+        if(button == UP && LED5Brightness < 255)
+        {
+            LED5Brightness += 1;
+        }
+
+        if(button == DOWN && LED5Brightness > 0)
+        {
+            LED5Brightness -= 1;
+        }
+
+        if(SW2 == 0)
+        {
+            LED5Brightness = 0;
+        }
+
+        // PWM LED5 with current brightness
+        pwm_LED5(LED5Brightness);
+        
+        // Activate bootloader if SW1 is pressed.
+        if(SW1 == 0)
+        {
+            RESET();
+        }
+    }
+}
+
+        unsigned char button_pressed(void)
+        {
+            if(SW4 == 0)
+            {
+                return(UP);
+            }
+            else if(SW5 == 0)
+            {
+                return(DOWN);
+            }
+            else if(SW3 == 0)
+            {
+                LED5Brightness = 255;
+            }
+            else
+            {
+                return(noButton);
+            }
+        }
+
+         void pwm_LED5(unsigned char pwmValue)
+ {
+         for(unsigned char t = 255; t != 0; t --)
+     {
+         if(pwmValue == t)
+         {
+             LED5 = 1;
+         }
+         __delay_us(20);
+     }
+         // End the pulse if pwmValue < 255
+         if(pwmValue < 255)
+         {
+             LED5 = 0;
+         }
+ }
+
+void pwm_LED5(unsigned char LED5Brightness)
+{
+        for(unsigned char t = 255; t != 0; t --)
+    {
+        if(LED5Brightness == t)
+        {
+            LED5 = 1;
+        }
+        __delay_us(20);
+    }
+        // End the pulse if pwmValue < 255
+        if(LED5Brightness < 255)
+        {
+            LED5 = 0;
+        }
+}
+ 
  * 2.   Create a function that will return a number from 1-4 corresponding to
  *      which of the SW2 to SW5 switches is pressed, or return 0 if no switches
  *      are pressed. Then, create a function that will accept a number from 1 to
  *      4 that lights the corresponding LED beside each button.
  * 
+ 	unsigned char number();
+
+int main(void)
+{
+    OSC_config();               // Configure internal oscillator for 48 MHz
+    UBMP4_config();             // Configure on-board UBMP4 I/O devices
+	
+    while(1)
+	{
+        // Read up/down buttons and adjust LED5 brightness
+        num = number();
+        
+        if(num == 1)
+        {
+            LED3 = 1;
+        }
+
+        if(num == 2)
+        {
+            LED4 = 1;
+        }
+
+        if(num == 3)
+        {
+            LED5 = 1;
+        }
+
+        if(num == 4)
+        {
+            LED6 = 1;
+        }
+
+        if(num == 0)
+        {
+            LED3 = 0;
+            LED4 = 0;
+            LED5 = 0;
+            LED6 = 0;
+        }
+        
+        // Activate bootloader if SW1 is pressed.
+        if(SW1 == 0)
+        {
+            RESET();
+        }
+    }
+}
+
+unsigned char number(num)
+{
+    if(SW2 == 0)
+    {
+        return (1);
+    }
+    else if(SW3 == 0)
+    {
+        return (2);
+    }
+    else if(SW4 == 0)
+    {
+        return (3);
+    }
+    else if(SW5 == 0)
+    {
+        return (4);
+    }
+    else
+    {
+        return (0);
+    }
+}
+ 
  * 3.   Create a sound function that receives a parameter representing a tone's
  *      period. Modify your button function, above, to return a variable that
  *      will be passed to the sound function to make four different tones.
