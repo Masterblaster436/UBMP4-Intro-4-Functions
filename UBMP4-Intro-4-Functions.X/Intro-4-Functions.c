@@ -396,6 +396,76 @@ unsigned char number(num)
  *      period. Modify your button function, above, to return a variable that
  *      will be passed to the sound function to make four different tones.
  * 
+ 	unsigned int period; // This goes before int main(void)
+unsigned int number(); // This also goes before int main(void)
+
+        // Read up/down buttons and adjust LED5 brightness
+        period = number();
+        
+        // Make a tone
+        for(unsigned char cycles = 50; cycles != 0; cycles--)
+        {
+            BEEPER = !BEEPER;
+            for(unsigned int p = period; p != 0; p--);
+        }
+
+        if(period == 100)
+        {
+            BEEPER = !BEEPER;
+        }
+
+        if(period == 300)
+        {
+            BEEPER = !BEEPER;
+        }
+
+        if(period == 500)
+        {
+            BEEPER = !BEEPER;
+        }
+
+        if(period == 700)
+        {
+            BEEPER = !BEEPER;
+        }
+
+        if(period == 0)
+        {
+            BEEPER = 0;
+        }
+        
+        // Activate bootloader if SW1 is pressed.
+        if(SW1 == 0)
+        {
+            RESET();
+        }
+    }
+}
+
+unsigned int number(period)
+{
+    if(SW2 == 0)
+    {
+        return (100);
+    }
+    else if(SW3 == 0)
+    {
+        return (300);
+    }
+    else if(SW4 == 0)
+    {
+        return (500);
+    }
+    else if(SW5 == 0)
+    {
+        return (700);
+    }
+    else
+    {
+        return (0);
+    }
+}
+ 
  * 4.   A function that converts an 8-bit binary value into its decimal
  *      equivalent would be useful for helping us to debug our programs. Create
  *      a function that converts an 8-bit binary number into three decimal
