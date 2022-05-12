@@ -474,4 +474,25 @@ unsigned int number(period)
  *      a value of 142 will result in the hundreds variable containing the
  *      value 1, the tens variable containing 4, and the ones variable 2. How
  *      could you test this function to verify that it works? Try it!
+ 
+ 	An LED could be used to verify that it works.
+
+
+        // ones
+        if(exampleNumber%10 == 2)
+        {
+            LED3 = 1;
+        }
+
+        // tens
+        if((exampleNumber/10)%10 == 4)
+        {
+            LED4 = 1;
+        }
+        
+        // hundreds
+        if((exampleNumber/100)%10 == 1)
+        {
+            LED5 = 1;
+        }
  */
